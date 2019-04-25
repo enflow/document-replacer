@@ -8,7 +8,7 @@ class UnoconvConverter extends AbstractConverter
 {
     public $binary = '/usr/bin/unoconv';
 
-    public function convert(string $input, string $output)
+    public function convert(string $input, string $output): void
     {
         $command =
             $this->binary . ' ' .

@@ -20,7 +20,7 @@ class Template
         return $this->path;
     }
 
-    public static function fromFile(string $path)
+    public static function fromFile(string $path): self
     {
         return new static($path);
     }

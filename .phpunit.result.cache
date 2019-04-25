@@ -1,1 +1,1 @@
-C:37:"PHPUnit\Runner\DefaultTestResultCache":210:{a:2:{s:7:"defects";a:0:{}s:5:"times";a:2:{s:69:"Enflow\DocumentReplacer\Test\DocumentReplacerTest::test_basic_replace";d:0.081;s:65:"Enflow\DocumentReplacer\Test\DocumentReplacerTest::test_pdf_saver";d:4.021;}}}
+C:37:"PHPUnit\Runner\DefaultTestResultCache":210:{a:2:{s:7:"defects";a:0:{}s:5:"times";a:2:{s:69:"Enflow\DocumentReplacer\Test\DocumentReplacerTest::test_basic_replace";d:0.017;s:65:"Enflow\DocumentReplacer\Test\DocumentReplacerTest::test_pdf_saver";d:1.723;}}}

@@ -13,10 +13,10 @@ abstract class AbstractConverter
         $this->documentReplacer = $documentReplacer;
     }
 
-    public static function make(DocumentReplacer $documentReplacer)
+    public static function make(DocumentReplacer $documentReplacer): self
     {
         return new static($documentReplacer);
     }
 
-    abstract public function convert(string $input, string $output);
+    abstract public function convert(string $input, string $output): void;
 }
