@@ -1,0 +1,38 @@
+{
+    "name": "enflow/document-replacer",
+    "description": "Modify docx templates and convert them to PDF",
+    "homepage": "https://github.com/enflow-nl/document-replacer",
+    "keywords": [
+        "enflow",
+        "document",
+        "docx"
+    ],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Michel Bardelmeijer",
+            "email": "michel@enflow.nl"
+        }
+    ],
+    "require": {
+        "php": "^7.1",
+        "phpoffice/phpword": "^0.16.0",
+        "symfony/process": "^4.2"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^8.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "Enflow\\DocumentReplacer\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Enflow\\DocumentReplacer\\Test\\": "tests"
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit"
+    }
+}
