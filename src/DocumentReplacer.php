@@ -2,6 +2,7 @@
 
 namespace Enflow\DocumentReplacer;
 
+use Exception;
 use PhpOffice\PhpWord\TemplateProcessor;
 use Enflow\DocumentReplacer\Converters\AbstractConverter;
 
@@ -44,12 +45,21 @@ class DocumentReplacer
 
             $class::make($this)->convert($temporaryFile, $outputPath);
 
+            if (!file_exists($outputPath) || !filesize($outputPath)) {
+                throw new Exception("Converter failed to output valid file to {$outputPath}");
+            }
+
             return $outputPath;
         }
 
         rename($temporaryFile, $outputPath);
 
         return $outputPath;
+    }
+
+    public function output(): string
+    {
+        return file_get_contents($this->save(tempnam(sys_get_temp_dir(), 'document-replacer-output')));
     }
 
     public function templateProcessor(): TemplateProcessor

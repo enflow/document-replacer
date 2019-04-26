@@ -17,5 +17,10 @@ class UnoconvConverter extends AbstractConverter
 
         $process = Process::fromShellCommandline($command);
         $process->mustRun();
+
+        // https://github.com/unoconv/unoconv/issues/307
+        if (!pathinfo($output, PATHINFO_EXTENSION)) {
+            rename($output . '.pdf', $output);
+        }
     }
 }

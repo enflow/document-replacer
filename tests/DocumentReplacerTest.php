@@ -40,4 +40,16 @@ class DocumentReplacerTest extends TestCase
 
         $this->assertFileExists($output);
     }
+
+    public function test_unoconv_without_extension()
+    {
+        $output = '/tmp/replaced-document-without-extension';
+        file_exists($output) && unlink($output);
+
+        DocumentReplacer::template(__DIR__ . '/fixtures/template.docx')
+            ->converter(UnoconvConverter::class)
+            ->save($output);
+
+        $this->assertFileExists($output);
+    }
 }
