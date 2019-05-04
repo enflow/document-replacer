@@ -17,8 +17,12 @@ composer require enflow/document-replacer
 ## PDF conversion
 This package comes with an implementation to convert docx templates to PDF using unoconv. You can install this on your machine globally using:
 ```
+sudo add-apt-repository ppa:libreoffice/ppa
 apt-get install unoconv
 ```
+
+### Issue
+- unoconv process hangs: check for hanging openoffice processes: `pgrep -l 'office|writer|calc'`. `kill -9 [PID]` the hanging process. Happened in `libreoffice --version` 5, running on 6.3 now to see if it's still a common issue
 
 ## Usage
 ``` php

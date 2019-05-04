@@ -16,6 +16,7 @@ class UnoconvConverter extends AbstractConverter
             '--output "' . $output . '" ' . $input;
 
         $process = Process::fromShellCommandline($command);
+        $process->setTimeout(5);
         $process->mustRun();
 
         // https://github.com/unoconv/unoconv/issues/307
