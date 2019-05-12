@@ -1,4 +1,5 @@
 language: php
+dist: xenial
 
 php:
   - 7.2
@@ -10,8 +11,8 @@ before_install:
   - sudo add-apt-repository ppa:libreoffice/ppa -y
   - sudo apt-get update -qq
   - sudo apt-get install -y libreoffice unoconv
-  - sudo mkdir ~/.config/libreoffice
-  - sudo chmod 777 ~/.config/libreoffice
+  - sudo mkdir -p /home/travis/.config/libreoffice
+  - sudo chmod 777 /home/travis/.config/libreoffice
 
 env:
   matrix:
