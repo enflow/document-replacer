@@ -7,8 +7,11 @@ php:
 sudo: required
 
 before_install:
+  - sudo add-apt-repository ppa:libreoffice/ppa -y
   - sudo apt-get update -qq
   - sudo apt-get install -y libreoffice unoconv
+  - sudo mkdir ~/.config/libreoffice
+  - sudo chmod 777 ~/.config/libreoffice
 
 env:
   matrix:

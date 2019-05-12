@@ -2,6 +2,7 @@
 
 namespace Enflow\DocumentReplacer\Converters;
 
+use Enflow\DocumentReplacer\Exceptions\ConversionFailed;
 use Symfony\Component\Process\Process;
 
 class UnoconvConverter extends AbstractConverter
@@ -19,9 +20,13 @@ class UnoconvConverter extends AbstractConverter
         $process->setTimeout(5);
         $process->mustRun();
 
-        // https://github.com/unoconv/unoconv/issues/307
-        if (!pathinfo($output, PATHINFO_EXTENSION)) {
+        // unoconv 0.7 always appends extension to --output filename https://github.com/unoconv/unoconv/issues/307
+        if (!pathinfo($output, PATHINFO_EXTENSION) && file_exists($output . '.pdf')) {
             rename($output . '.pdf', $output);
+        }
+
+        if (!file_exists($output)) {
+            throw new ConversionFailed("Unable to convert document to PDF trough unoconv");
         }
     }
 }
