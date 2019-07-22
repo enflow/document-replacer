@@ -21,7 +21,11 @@ class DocumentReplacer
     public function replace(array $keyValue): self
     {
         foreach ($keyValue as $key => $value) {
-            $this->templateProcessor->setValue($key, $value);
+            if ($value instanceof ValueTypes\Image) {
+                $this->templateProcessor->setImageValue($key, $value->replacements());
+            } else {
+                $this->templateProcessor->setValue($key, $value);
+            }
         }
 
         return $this;

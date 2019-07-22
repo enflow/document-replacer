@@ -38,6 +38,33 @@ DocumentReplacer::template('filename.docx')
     ->save('document.pdf');
 ```
 
+#### Images
+If you wish to replace images in your document, you can pass the `Image` class to the replacement array like this:
+```
+use Enflow\DocumentReplacer\DocumentReplacer;
+use Enflow\DocumentReplacer\ValueTypes\Image;
+
+DocumentReplacer::template('filename.docx')
+    ->converter(UnoconvConverter::class)
+    ->replace([
+        '${primary}' => Image::forPath('image.png'),
+        '${second}' => Image::forBase64('iVBORw0KGgoA...'),
+    ])
+    ->save('document.pdf');
+```
+
+The search-pattern model for images can be like:
+- ``${search-image-pattern}``
+- ``${search-image-pattern:[width]:[height]:[ratio]}``
+- ``${search-image-pattern:[width]x[height]}``
+- ``${search-image-pattern:size=[width]x[height]}``
+- ``${search-image-pattern:width=[width]:height=[height]:ratio=false}``
+Where:
+- [width] and [height] can be just numbers or numbers with measure, which supported by Word (cm|mm|in|pt|pc|px|%|em|ex)
+- [ratio] uses only for ``false``, ``-`` or ``f`` to turn off respect aspect ration of image. By default template image size uses as 'container' size.
+
+More info can be found in the [`PHPWord` documentation](https://github.com/PHPOffice/PHPWord/blob/develop/docs/templates-processing.rst#setimagevalue)
+
 ## Testing
 ``` bash
 $ composer test
