@@ -17,7 +17,7 @@ class UnoconvConverter extends AbstractConverter
             '--output "' . $output . '" ' . $input;
 
         $process = Process::fromShellCommandline($command);
-        $process->setTimeout(5);
+        $process->setTimeout(10);
         $process->mustRun();
 
         // unoconv 0.7 always appends extension to --output filename https://github.com/unoconv/unoconv/issues/307
