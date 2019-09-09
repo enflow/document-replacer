@@ -14,12 +14,12 @@ class Image
         $this->path = $path;
     }
 
-    public static function forPath(string $path)
+    public static function forPath(string $path): self
     {
         return new static($path);
     }
 
-    public static function forBase64(string $base64data)
+    public static function forBase64(string $base64data): self
     {
         // strip out data uri scheme information (see RFC 2397)
         if (strpos($base64data, ';base64') !== false) {
@@ -27,13 +27,21 @@ class Image
             [$_, $base64data] = explode(',', $base64data);
         }
 
-        $binaryData = base64_decode($base64data);
+        return static::forBinary(base64_decode($base64data));
+    }
 
+    public static function forBinary($binary): self
+    {
         // temporarily store the decoded data on the filesystem to be able to pass it trough the template replacer
         $tmpFile = tempnam(sys_get_temp_dir(), 'document-replacer');
-        file_put_contents($tmpFile, $binaryData);
+        file_put_contents($tmpFile, $binary);
 
         return new static($tmpFile);
+    }
+
+    public function signature(): string
+    {
+        return md5_file($this->path);
     }
 
     public function width(int $width): self
@@ -61,6 +69,7 @@ class Image
     {
         return [
             'path' => $this->path,
+            'signature' => $this->signature(),
             'width' => $this->width,
             'height' => $this->height,
             'ratio' => $this->ratio,
