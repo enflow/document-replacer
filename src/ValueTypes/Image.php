@@ -2,16 +2,18 @@
 
 namespace Enflow\DocumentReplacer\ValueTypes;
 
+use Closure;
+
 class Image
 {
-    private $path;
+    private $image;
     private $ratio;
     private $width;
     private $height;
 
-    private function __construct(string $path)
+    private function __construct($image)
     {
-        $this->path = $path;
+        $this->image = $image;
     }
 
     public static function forPath(string $path): self
@@ -39,9 +41,23 @@ class Image
         return new static($tmpFile);
     }
 
+    public static function lazy(Closure $closure)
+    {
+        return new static($closure);
+    }
+
+    public function path(): string
+    {
+        if (is_callable($this->image)) {
+            return (($this->image)())->path();
+        }
+
+        return $this->image;
+    }
+
     public function signature(): string
     {
-        return md5_file($this->path);
+        return md5_file($this->path());
     }
 
     public function width(int $width): self
@@ -68,7 +84,7 @@ class Image
     public function replacements(): array
     {
         return [
-            'path' => $this->path,
+            'path' => $this->path(),
             'signature' => $this->signature(),
             'width' => $this->width,
             'height' => $this->height,

@@ -18,6 +18,11 @@ class DocumentReplacer
         $this->templateProcessor = new TemplateProcessor($this->template->path());
     }
 
+    public function variables(): array
+    {
+        return $this->templateProcessor->getVariables();
+    }
+
     public function replace(array $keyValue): self
     {
         foreach ($keyValue as $key => $value) {
