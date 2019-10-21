@@ -55,6 +55,11 @@ class Image
         return $this->image;
     }
 
+    public function contents(): string
+    {
+        return file_get_contents($this->path());
+    }
+
     public function signature(): string
     {
         return md5_file($this->path());
