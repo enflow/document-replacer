@@ -29,7 +29,8 @@ class DocumentReplacer
             if ($value instanceof ValueTypes\Image) {
                 $this->templateProcessor->setImageValue($key, $value->replacements());
             } else {
-                $this->templateProcessor->setValue($key, $value);
+                // Use htmlentities due to this PHPWord bug: https://github.com/PHPOffice/PHPWord/issues/1467
+                $this->templateProcessor->setValue($key, htmlentities($value, ENT_XML1));
             }
         }
 

@@ -26,7 +26,7 @@ class UnoconvConverter extends AbstractConverter
         }
 
         if (!file_exists($output)) {
-            throw new ConversionFailed("Unable to convert document to PDF trough unoconv");
+            throw new ConversionFailed("Unable to convert document to PDF through unoconv");
         }
     }
 }

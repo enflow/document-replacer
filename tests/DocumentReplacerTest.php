@@ -52,4 +52,21 @@ class DocumentReplacerTest extends TestCase
 
         $this->assertFileExists($output);
     }
+
+    public function test_replace_with_ampersand_and_convert()
+    {
+        // https://github.com/PHPOffice/PHPWord/issues/1467
+
+        $output = '/tmp/replaced-document.pdf';
+        file_exists($output) && unlink($output);
+
+        DocumentReplacer::template(__DIR__ . '/fixtures/template.docx')
+            ->converter(UnoconvConverter::class)
+            ->replace([
+                '${address.city}' => 'Alphen & de Rijn',
+            ])
+            ->save($output);
+
+        $this->assertFileExists($output);
+    }
 }
