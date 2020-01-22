@@ -18,7 +18,7 @@ composer require enflow/document-replacer
 This package comes with an implementation to convert docx templates to PDF using unoconv. You can install this on your machine globally using:
 ```
 sudo add-apt-repository ppa:libreoffice/ppa
-apt-get install unoconv
+sudo apt-get install unoconv
 ```
 
 ### Issue
