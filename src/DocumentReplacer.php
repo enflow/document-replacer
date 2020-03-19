@@ -2,6 +2,7 @@
 
 namespace Enflow\DocumentReplacer;
 
+use Enflow\DocumentReplacer\Exceptions\InvalidReplacement;
 use Exception;
 use PhpOffice\PhpWord\TemplateProcessor;
 use Enflow\DocumentReplacer\Converters\AbstractConverter;
@@ -29,6 +30,11 @@ class DocumentReplacer
             if ($value instanceof ValueTypes\Image) {
                 $this->templateProcessor->setImageValue($key, $value->replacements());
             } else {
+                if (!is_scalar($value) && $value !== null) {
+                    $type = gettype($value);
+                    throw new InvalidReplacement("Could not replace '{$key}' in template. Value must be non-scalar or null. Type is: {$type}");
+                }
+
                 // Use htmlentities due to this PHPWord bug: https://github.com/PHPOffice/PHPWord/issues/1467
                 $this->templateProcessor->setValue($key, htmlentities($value, ENT_XML1));
             }

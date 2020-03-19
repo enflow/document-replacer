@@ -4,6 +4,7 @@ namespace Enflow\DocumentReplacer\Test;
 
 use Enflow\DocumentReplacer\Converters\UnoconvConverter;
 use Enflow\DocumentReplacer\DocumentReplacer;
+use Enflow\DocumentReplacer\Exceptions\InvalidReplacement;
 use PHPUnit\Framework\TestCase;
 
 class DocumentReplacerTest extends TestCase
@@ -16,8 +17,9 @@ class DocumentReplacerTest extends TestCase
         DocumentReplacer::template(__DIR__ . '/fixtures/template.docx')
             ->replace([
                 '${user}' => 'Michel',
-                '${address.city}' => 'Alphen aan den Rijn',
                 '${company}' => 'Enflow',
+                '${address.city}' => 'Alphen aan den Rijn',
+                '${address.country}' => null,
             ])
             ->save($output);
 
@@ -68,5 +70,17 @@ class DocumentReplacerTest extends TestCase
             ->save($output);
 
         $this->assertFileExists($output);
+    }
+
+    public function test_replacement_tag_must_be_scalar()
+    {
+        $this->expectException(InvalidReplacement::class);
+        $this->expectExceptionMessage('Could not replace \'${address.city}\' in template. Value must be non-scalar or null. Type is: array');
+
+        DocumentReplacer::template(__DIR__ . '/fixtures/template.docx')
+            ->converter(UnoconvConverter::class)
+            ->replace([
+                '${address.city}' => ['long' => 'Alphen aan den Rijn', 'short' => 'Alphen'],
+            ]);
     }
 }
