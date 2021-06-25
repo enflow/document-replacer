@@ -6,10 +6,12 @@ use Closure;
 
 class Image
 {
+    /** @var string|Closure */
     private $image;
-    private $ratio;
-    private $width;
-    private $height;
+
+    private ?bool $ratio = null;
+    private ?int $width = null;
+    private ?int $height = null;
 
     private function __construct($image)
     {

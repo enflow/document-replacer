@@ -2,10 +2,10 @@
 
 namespace Enflow\DocumentReplacer;
 
+use Enflow\DocumentReplacer\Converters\AbstractConverter;
 use Enflow\DocumentReplacer\Exceptions\InvalidReplacement;
 use Exception;
 use PhpOffice\PhpWord\TemplateProcessor;
-use Enflow\DocumentReplacer\Converters\AbstractConverter;
 
 class DocumentReplacer
 {
@@ -30,8 +30,9 @@ class DocumentReplacer
             if ($value instanceof ValueTypes\Image) {
                 $this->templateProcessor->setImageValue($key, $value->replacements());
             } else {
-                if (!is_scalar($value) && $value !== null) {
+                if (! is_scalar($value) && $value !== null) {
                     $type = gettype($value);
+
                     throw new InvalidReplacement("Could not replace '{$key}' in template. Value must be non-scalar or null. Type is: {$type}");
                 }
 
@@ -61,7 +62,7 @@ class DocumentReplacer
 
             $class::make($this)->convert($temporaryFile, $outputPath);
 
-            if (!file_exists($outputPath) || !filesize($outputPath)) {
+            if (! file_exists($outputPath) || ! filesize($outputPath)) {
                 throw new Exception("Converter failed to output valid file to {$outputPath}");
             }
 

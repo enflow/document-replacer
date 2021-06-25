@@ -6,7 +6,7 @@ use Enflow\DocumentReplacer\DocumentReplacer;
 
 abstract class AbstractConverter
 {
-    private $documentReplacer;
+    private DocumentReplacer $documentReplacer;
 
     private function __construct(DocumentReplacer $documentReplacer)
     {
