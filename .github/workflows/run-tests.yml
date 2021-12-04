@@ -1,7 +1,6 @@
 name: run-tests
 
-#on: [push, pull_request]
-on: [push]
+on: [push, pull_request]
 
 jobs:
     test:
@@ -11,7 +10,7 @@ jobs:
             matrix:
                 os: [ubuntu-latest]
                 php: [8.0]
-                dependency-version: [prefer-stable] # prefer-lowest,
+                dependency-version: [prefer-stable, prefer-lowest]
 
         name: P${{ matrix.php }} - ${{ matrix.dependency-version }} - ${{ matrix.os }}
 
@@ -37,4 +36,4 @@ jobs:
                      sudo pip install unoserver
 
             -   name: Execute tests
-                run: vendor/bin/phpunit
+                run: composer test
