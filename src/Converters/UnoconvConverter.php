@@ -5,14 +5,15 @@ namespace Enflow\DocumentReplacer\Converters;
 use Enflow\DocumentReplacer\Exceptions\ConversionFailed;
 use Symfony\Component\Process\Process;
 
+/** @deprecated */
 class UnoconvConverter extends AbstractConverter
 {
-    public string $binary = '/usr/bin/unoconv';
+    private const BINARY = '/usr/bin/unoconv';
 
     public function convert(string $input, string $output): void
     {
         $command =
-            $this->binary . ' ' .
+            ($this->options['binary'] ?? static::BINARY) . ' ' .
             '--format pdf ' .
             '--output "' . $output . '" ' . $input;
 

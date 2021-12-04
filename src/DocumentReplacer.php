@@ -9,9 +9,10 @@ use PhpOffice\PhpWord\TemplateProcessor;
 
 class DocumentReplacer
 {
-    private $template;
-    private $templateProcessor;
-    private $converter;
+    private Template $template;
+    private TemplateProcessor $templateProcessor;
+    private ?string $converter = null;
+    private array $converterOptions = [];
 
     private function __construct(Template $template)
     {
@@ -44,9 +45,10 @@ class DocumentReplacer
         return $this;
     }
 
-    public function converter($converter): self
+    public function converter($converter, array $options = []): self
     {
         $this->converter = $converter;
+        $this->converterOptions = $options;
 
         return $this;
     }
@@ -60,7 +62,7 @@ class DocumentReplacer
             /** @var AbstractConverter $class */
             $class = $this->converter;
 
-            $class::make($this)->convert($temporaryFile, $outputPath);
+            $class::make($this, $this->converterOptions)->convert($temporaryFile, $outputPath);
 
             if (! file_exists($outputPath) || ! filesize($outputPath)) {
                 throw new Exception("Converter failed to output valid file to {$outputPath}");

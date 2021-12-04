@@ -6,16 +6,16 @@ use Enflow\DocumentReplacer\DocumentReplacer;
 
 abstract class AbstractConverter
 {
-    private DocumentReplacer $documentReplacer;
-
-    private function __construct(DocumentReplacer $documentReplacer)
+    private function __construct(
+        protected DocumentReplacer $documentReplacer,
+        protected array $options
+    )
     {
-        $this->documentReplacer = $documentReplacer;
     }
 
-    public static function make(DocumentReplacer $documentReplacer): self
+    public static function make(DocumentReplacer $documentReplacer, array $options = []): self
     {
-        return new static($documentReplacer);
+        return new static($documentReplacer, $options);
     }
 
     abstract public function convert(string $input, string $output): void;

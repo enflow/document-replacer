@@ -3,12 +3,27 @@
 namespace Enflow\DocumentReplacer\Test;
 
 use Enflow\DocumentReplacer\Converters\UnoconvConverter;
+use Enflow\DocumentReplacer\Converters\UnoserverConverter;
 use Enflow\DocumentReplacer\DocumentReplacer;
 use Enflow\DocumentReplacer\Exceptions\InvalidReplacement;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Process\Process;
 
 class DocumentReplacerTest extends TestCase
 {
+    private static $process = null;
+
+    public static function setUpBeforeClass(): void
+    {
+        static::$process = Process::fromShellCommandline('/usr/local/bin/unoserver');
+        static::$process->start();
+    }
+
+    public static function tearDownAfterClass(): void
+    {
+        static::$process->stop();
+    }
+
     public function test_basic_replace()
     {
         $output = '/tmp/replaced-document.docx';
@@ -32,7 +47,7 @@ class DocumentReplacerTest extends TestCase
         file_exists($output) && unlink($output);
 
         DocumentReplacer::template(__DIR__ . '/fixtures/template.docx')
-            ->converter(UnoconvConverter::class)
+            ->converter(UnoserverConverter::class)
             ->replace([
                 '${user}' => 'Michel',
                 '${address.city}' => 'Alphen aan den Rijn',
@@ -49,7 +64,7 @@ class DocumentReplacerTest extends TestCase
         file_exists($output) && unlink($output);
 
         DocumentReplacer::template(__DIR__ . '/fixtures/template.docx')
-            ->converter(UnoconvConverter::class)
+            ->converter(UnoserverConverter::class)
             ->save($output);
 
         $this->assertFileExists($output);
@@ -63,7 +78,7 @@ class DocumentReplacerTest extends TestCase
         file_exists($output) && unlink($output);
 
         DocumentReplacer::template(__DIR__ . '/fixtures/template.docx')
-            ->converter(UnoconvConverter::class)
+            ->converter(UnoserverConverter::class)
             ->replace([
                 '${address.city}' => 'Alphen & de Rijn',
             ])
@@ -78,9 +93,27 @@ class DocumentReplacerTest extends TestCase
         $this->expectExceptionMessage('Could not replace \'${address.city}\' in template. Value must be non-scalar or null. Type is: array');
 
         DocumentReplacer::template(__DIR__ . '/fixtures/template.docx')
-            ->converter(UnoconvConverter::class)
+            ->converter(UnoserverConverter::class)
             ->replace([
                 '${address.city}' => ['long' => 'Alphen aan den Rijn', 'short' => 'Alphen'],
             ]);
+    }
+
+    public function test_replace_with_options_passed_to_unoserver()
+    {
+        $output = '/tmp/replaced-document.docx';
+        file_exists($output) && unlink($output);
+
+        DocumentReplacer::template(__DIR__ . '/fixtures/template.docx')
+            ->converter(UnoserverConverter::class, [
+                'interface' => 'localhost',
+                'port' => 2002,
+            ])
+            ->replace([
+                '${user}' => 'Michel',
+            ])
+            ->save($output);
+
+        $this->assertFileExists($output);
     }
 }
