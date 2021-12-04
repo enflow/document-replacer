@@ -7,6 +7,7 @@ use Enflow\DocumentReplacer\DocumentReplacer;
 use Enflow\DocumentReplacer\Exceptions\InvalidReplacement;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Process\Process;
+use Symfony\Component\Process\ExecutableFinder;
 
 class DocumentReplacerTest extends TestCase
 {
@@ -14,7 +15,9 @@ class DocumentReplacerTest extends TestCase
 
     public static function setUpBeforeClass(): void
     {
-        static::$process = Process::fromShellCommandline('/usr/local/bin/unoserver');
+        $unoserverPath = (new ExecutableFinder())->find('unoserver');
+
+        static::$process = Process::fromShellCommandline($unoserverPath);
         static::$process->start();
     }
 

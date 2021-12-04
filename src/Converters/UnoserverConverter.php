@@ -3,16 +3,15 @@
 namespace Enflow\DocumentReplacer\Converters;
 
 use Enflow\DocumentReplacer\Exceptions\ConversionFailed;
+use Symfony\Component\Process\ExecutableFinder;
 use Symfony\Component\Process\Process;
 
 class UnoserverConverter extends AbstractConverter
 {
-    private const BINARY = '/usr/local/bin/unoconvert';
-
     public function convert(string $input, string $output): void
     {
         $process = new Process([
-            $this->options['binary'] ?? static::BINARY,
+            $this->options['binary'] ?? (new ExecutableFinder())->find('unoconvert'),
             '--convert-to', 'pdf',
             '--interface', ($this->options['interface'] ?? '127.0.0.1'),
             '--port', ($this->options['port'] ?? '2002'),
