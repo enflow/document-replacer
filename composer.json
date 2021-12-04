@@ -34,7 +34,7 @@
         }
     },
     "scripts": {
-        "test": "vendor/bin/phpunit",
+        "test": "bash tests.sh",
         "format": "vendor/bin/php-cs-fixer fix --allow-risky=yes"
     }
 }
