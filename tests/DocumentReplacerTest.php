@@ -6,8 +6,8 @@ use Enflow\DocumentReplacer\Converters\UnoserverConverter;
 use Enflow\DocumentReplacer\DocumentReplacer;
 use Enflow\DocumentReplacer\Exceptions\InvalidReplacement;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\Process\Process;
 use Symfony\Component\Process\ExecutableFinder;
+use Symfony\Component\Process\Process;
 
 class DocumentReplacerTest extends TestCase
 {
