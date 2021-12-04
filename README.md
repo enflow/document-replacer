@@ -49,7 +49,8 @@ DocumentReplacer::template('filename.docx')
 
 #### Images
 If you wish to replace images in your document, you can pass the `Image` class to the replacement array like this:
-```
+
+```php
 use Enflow\DocumentReplacer\DocumentReplacer;
 use Enflow\DocumentReplacer\ValueTypes\Image;
 
@@ -78,14 +79,11 @@ More info can be found in the [`PHPWord` documentation](https://github.com/PHPOf
 Running the server on non-default options (IP 127.0.0.1 / port 2002)? You can pass along the interface and port to the `UnoserverConverter`:
 
 ``` php
-use Enflow\DocumentReplacer\DocumentReplacer;
-
 DocumentReplacer::template('filename.docx')
     ->converter(UnoserverConverter::class, [
         'interface' => '192.168.0.1',
         'port' => 1533,
     ])
-    ...
 ```
 
 ## Testing
