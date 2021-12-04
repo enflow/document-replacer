@@ -1,6 +1,7 @@
 name: run-tests
 
-on: [push, pull_request]
+#on: [push, pull_request]
+on: [push]
 
 jobs:
     test:
@@ -10,7 +11,7 @@ jobs:
             matrix:
                 os: [ubuntu-latest]
                 php: [8.0]
-                dependency-version: [prefer-lowest, prefer-stable]
+                dependency-version: [prefer-stable] # prefer-lowest,
 
         name: P${{ matrix.php }} - ${{ matrix.dependency-version }} - ${{ matrix.os }}
 

@@ -11,14 +11,24 @@ use Symfony\Component\Process\ExecutableFinder;
 
 class DocumentReplacerTest extends TestCase
 {
-    private static $process = null;
+    private static ?Process $process = null;
 
     public static function setUpBeforeClass(): void
     {
         $unoserverPath = (new ExecutableFinder())->find('unoserver');
 
-        static::$process = Process::fromShellCommandline($unoserverPath);
-        static::$process->start();
+        static::$process = new Process([
+            $unoserverPath,
+            '--interface', '127.0.0.1',
+            '--port', '2002',
+        ]);
+        static::$process->start(function ($type, $buffer) {
+            if (Process::ERR === $type) {
+                echo 'ERR > ' . $buffer;
+            } else {
+                echo 'OUT > ' . $buffer;
+            }
+        });
     }
 
     public static function tearDownAfterClass(): void
