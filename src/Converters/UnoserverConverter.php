@@ -2,7 +2,6 @@
 
 namespace Enflow\DocumentReplacer\Converters;
 
-use Enflow\DocumentReplacer\Exceptions\ConversionFailed;
 use Symfony\Component\Process\ExecutableFinder;
 use Symfony\Component\Process\Process;
 
