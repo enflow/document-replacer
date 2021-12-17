@@ -25,9 +25,5 @@ class UnoconvConverter extends AbstractConverter
         if (! pathinfo($output, PATHINFO_EXTENSION) && file_exists($output . '.pdf')) {
             rename($output . '.pdf', $output);
         }
-
-        if (! file_exists($output)) {
-            throw new ConversionFailed("Unable to convert document to PDF through unoconv");
-        }
     }
 }

@@ -55,8 +55,11 @@ class DocumentReplacer
 
     public function save(string $outputPath): string
     {
-        $temporaryFile = tempnam(sys_get_temp_dir(), 'document-replacer');
-        $this->templateProcessor->saveAs($temporaryFile);
+        $temporaryFile = $this->templateProcessor->save();
+
+        if (! file_exists($temporaryFile) || ! filesize($temporaryFile)) {
+            throw new Exception("Template processor failed to output valid file to {$temporaryFile}");
+        }
 
         if ($this->converter) {
             /** @var AbstractConverter $class */
