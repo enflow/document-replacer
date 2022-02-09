@@ -6,10 +6,7 @@ use Enflow\DocumentReplacer\DocumentReplacer;
 
 abstract class AbstractConverter
 {
-    private function __construct(
-        protected DocumentReplacer $documentReplacer,
-        protected array $options
-    ) {
+    private function __construct(protected DocumentReplacer $documentReplacer, protected array $options) {
     }
 
     public static function make(DocumentReplacer $documentReplacer, array $options = []): self

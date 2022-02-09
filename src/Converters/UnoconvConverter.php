@@ -6,6 +6,7 @@ use Enflow\DocumentReplacer\Exceptions\ConversionFailed;
 use Symfony\Component\Process\Process;
 
 /** @deprecated */
+/** Will be removed in 3.0 */
 class UnoconvConverter extends AbstractConverter
 {
     private const BINARY = '/usr/bin/unoconv';

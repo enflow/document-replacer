@@ -6,7 +6,7 @@ use InvalidArgumentException;
 
 class Template
 {
-    private function __construct(string $path)
+    private function __construct(private string $path)
     {
         if (! file_exists($path)) {
             throw new InvalidArgumentException("File at '{$path}' cannot be found.");
@@ -15,8 +15,6 @@ class Template
         if (! is_file($path)) {
             throw new InvalidArgumentException("File at '{$path}' must be a file.");
         }
-
-        $this->path = $path;
     }
 
     public function path(): string

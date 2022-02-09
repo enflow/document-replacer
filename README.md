@@ -23,7 +23,7 @@ sudo pip install unoserver
 ```
 
 ## Converters
-It's highly recommend using the new `unoconvert` converter. If you are unable to upgrade, we still provide the deprecated `UnoconvConverter` for the time being.
+It's highly recommend using the new `unoconvert` converter. If you are unable to upgrade, we still provide the deprecated `UnoconvConverter` for the time being. `UnoconvConverter` is deprecated and will be removed in 3.0.
 
 ## Server
 Unoserver works together with unoconvert. Unoserver runs as a daemon on the server, and unoconvert connects through it to pass the files. To see why this is more efficient, see https://github.com/unoconv/unoserver/#overview

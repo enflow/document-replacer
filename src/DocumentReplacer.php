@@ -9,15 +9,13 @@ use PhpOffice\PhpWord\TemplateProcessor;
 
 class DocumentReplacer
 {
-    private Template $template;
     private TemplateProcessor $templateProcessor;
     private ?string $converter = null;
     private array $converterOptions = [];
 
-    private function __construct(Template $template)
+    private function __construct(private Template $template)
     {
-        $this->template = $template;
-        $this->templateProcessor = new TemplateProcessor($this->template->path());
+        $this->templateProcessor = new TemplateProcessor($template->path());
     }
 
     public function variables(): array

@@ -6,16 +6,13 @@ use Closure;
 
 class Image
 {
-    /** @var string|Closure */
-    private $image;
-
     private ?bool $ratio = null;
     private ?int $width = null;
     private ?int $height = null;
 
-    private function __construct($image)
+    private function __construct(private Closure|string $image)
     {
-        $this->image = $image;
+
     }
 
     public static function forPath(string $path): self
@@ -26,7 +23,7 @@ class Image
     public static function forBase64(string $base64data): self
     {
         // strip out data uri scheme information (see RFC 2397)
-        if (strpos($base64data, ';base64') !== false) {
+        if (str_contains($base64data, ';base64')) {
             [$_, $base64data] = explode(';', $base64data);
             [$_, $base64data] = explode(',', $base64data);
         }
@@ -36,14 +33,14 @@ class Image
 
     public static function forBinary($binary): self
     {
-        // temporarily store the decoded data on the filesystem to be able to pass it trough the template replacer
+        // Temporarily store the decoded data on the filesystem to be able to pass it through the template replacer
         $tmpFile = tempnam(sys_get_temp_dir(), 'document-replacer');
         file_put_contents($tmpFile, $binary);
 
         return new static($tmpFile);
     }
 
-    public static function lazy(Closure $closure)
+    public static function lazy(Closure $closure): self
     {
         return new static($closure);
     }
