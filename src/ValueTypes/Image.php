@@ -12,7 +12,6 @@ class Image
 
     private function __construct(private Closure|string $image)
     {
-
     }
 
     public static function forPath(string $path): self
