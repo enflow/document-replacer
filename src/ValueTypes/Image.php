@@ -3,15 +3,19 @@
 namespace Enflow\DocumentReplacer\ValueTypes;
 
 use Closure;
+use Enflow\DocumentReplacer\Exceptions\ImageSerializationException;
+use JsonSerializable;
 
-class Image
+class Image implements JsonSerializable
 {
+    private ?string $key = null; // Caching key
     private ?bool $ratio = null;
     private ?int $width = null;
     private ?int $height = null;
 
     private function __construct(private Closure|string $image)
     {
+
     }
 
     public static function forPath(string $path): self
@@ -63,6 +67,13 @@ class Image
         return md5_file($this->path());
     }
 
+    public function key(string $key): self
+    {
+        $this->key = $key;
+
+        return $this;
+    }
+
     public function width(int $width): self
     {
         $this->width = $width;
@@ -89,6 +100,20 @@ class Image
         return [
             'path' => $this->path(),
             'signature' => $this->signature(),
+            'width' => $this->width,
+            'height' => $this->height,
+            'ratio' => $this->ratio,
+        ];
+    }
+
+    public function jsonSerialize(): mixed
+    {
+        if ($this->image instanceof Closure && empty($this->key)) {
+            throw ImageSerializationException::noKeyDefined();
+        }
+
+        return [
+            'key' => $this->key,
             'width' => $this->width,
             'height' => $this->height,
             'ratio' => $this->ratio,

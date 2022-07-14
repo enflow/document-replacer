@@ -2,6 +2,7 @@
 
 namespace Enflow\DocumentReplacer\Test;
 
+use Enflow\DocumentReplacer\Exceptions\ImageSerializationException;
 use Enflow\DocumentReplacer\ValueTypes\Image;
 use PHPUnit\Framework\TestCase;
 
@@ -44,6 +45,26 @@ class ImageValueTypeTest extends TestCase
                 return Image::forBinary(base64_decode('iVBORw0KGgoAAAANSUhEUgAAABQAAAAVCAIAAADJt1n/AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAB8SURBVDhP3YxBDoAgDAR5iEf//zPfgCutCGwp4MXEyZI0W6bh2PaYyMM8Aa/0l05UsjDvGzIoG+fWJQPHfyMDKccy4E9oOLpLeLLQ9OWJRwamz2VXNqPrm1xWMjB/M56coy0hK0PWKdHz5fRABj0f/Efm6I5o5SW+kmM8AS/fakEk7YJkAAAAAElFTkSuQmCC'));
             })->signature()
         );
+    }
+
+    public function test_image_lazy_throws_exception_when_no_key_is_defined()
+    {
+        $this->expectException(ImageSerializationException::class);
+
+        json_encode(
+            Image::lazy(function () {
+                return Image::forBinary(base64_decode('iVBORw0KGgoAAAANSUhEUgAAABQAAAAVCAIAAADJt1n/AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAB8SURBVDhP3YxBDoAgDAR5iEf//zPfgCutCGwp4MXEyZI0W6bh2PaYyMM8Aa/0l05UsjDvGzIoG+fWJQPHfyMDKccy4E9oOLpLeLLQ9OWJRwamz2VXNqPrm1xWMjB/M56coy0hK0PWKdHz5fRABj0f/Efm6I5o5SW+kmM8AS/fakEk7YJkAAAAAElFTkSuQmCC'));
+            })->width(100)
+        );
+    }
+
+    public function test_image_lazy_serializes_key_to_json_output()
+    {
+        $this->assertEquals('{"key":"foo","width":100,"height":null,"ratio":null}', json_encode(
+            Image::lazy(function () {
+                return Image::forBinary(base64_decode('iVBORw0KGgoAAAANSUhEUgAAABQAAAAVCAIAAADJt1n/AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAB8SURBVDhP3YxBDoAgDAR5iEf//zPfgCutCGwp4MXEyZI0W6bh2PaYyMM8Aa/0l05UsjDvGzIoG+fWJQPHfyMDKccy4E9oOLpLeLLQ9OWJRwamz2VXNqPrm1xWMjB/M56coy0hK0PWKdHz5fRABj0f/Efm6I5o5SW+kmM8AS/fakEk7YJkAAAAAElFTkSuQmCC'));
+            })->width(100)->key('foo')
+        ));
     }
 
     public function test_image_replacement_tags()
