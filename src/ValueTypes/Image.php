@@ -15,7 +15,6 @@ class Image implements JsonSerializable
 
     private function __construct(private Closure|string $image)
     {
-
     }
 
     public static function forPath(string $path): self
