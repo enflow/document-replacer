@@ -14,7 +14,7 @@ class DocumentReplacerTest extends TestCase
         $output = '/tmp/replaced-document.docx';
         file_exists($output) && unlink($output);
 
-        DocumentReplacer::template(__DIR__ . '/fixtures/template.docx')
+        DocumentReplacer::template(__DIR__.'/fixtures/template.docx')
             ->replace([
                 '${user}' => 'Michel',
                 '${company}' => 'Enflow',
@@ -31,7 +31,7 @@ class DocumentReplacerTest extends TestCase
         $output = '/tmp/replaced-document.pdf';
         file_exists($output) && unlink($output);
 
-        DocumentReplacer::template(__DIR__ . '/fixtures/template.docx')
+        DocumentReplacer::template(__DIR__.'/fixtures/template.docx')
             ->converter(UnoserverConverter::class)
             ->replace([
                 '${user}' => 'Michel',
@@ -48,7 +48,7 @@ class DocumentReplacerTest extends TestCase
         $output = '/tmp/replaced-document-without-extension';
         file_exists($output) && unlink($output);
 
-        DocumentReplacer::template(__DIR__ . '/fixtures/template.docx')
+        DocumentReplacer::template(__DIR__.'/fixtures/template.docx')
             ->converter(UnoserverConverter::class)
             ->save($output);
 
@@ -62,7 +62,7 @@ class DocumentReplacerTest extends TestCase
         $output = '/tmp/replaced-document.pdf';
         file_exists($output) && unlink($output);
 
-        DocumentReplacer::template(__DIR__ . '/fixtures/template.docx')
+        DocumentReplacer::template(__DIR__.'/fixtures/template.docx')
             ->converter(UnoserverConverter::class)
             ->replace([
                 '${address.city}' => 'Alphen & de Rijn',
@@ -77,7 +77,7 @@ class DocumentReplacerTest extends TestCase
         $this->expectException(InvalidReplacement::class);
         $this->expectExceptionMessage('Could not replace \'${address.city}\' in template. Value must be non-scalar or null. Type is: array');
 
-        DocumentReplacer::template(__DIR__ . '/fixtures/template.docx')
+        DocumentReplacer::template(__DIR__.'/fixtures/template.docx')
             ->converter(UnoserverConverter::class)
             ->replace([
                 '${address.city}' => ['long' => 'Alphen aan den Rijn', 'short' => 'Alphen'],
@@ -89,7 +89,7 @@ class DocumentReplacerTest extends TestCase
         $output = '/tmp/replaced-document.docx';
         file_exists($output) && unlink($output);
 
-        DocumentReplacer::template(__DIR__ . '/fixtures/template.docx')
+        DocumentReplacer::template(__DIR__.'/fixtures/template.docx')
             ->converter(UnoserverConverter::class, [
                 'interface' => 'localhost',
                 'port' => 2002,

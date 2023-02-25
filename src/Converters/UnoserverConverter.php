@@ -20,12 +20,12 @@ class UnoserverConverter extends AbstractConverter
         $process = Process::fromShellCommandline(implode(' ', [
             $binary,
             '--convert-to pdf',
-            '--interface ' . escapeshellarg($this->options['interface'] ?? '127.0.0.1'),
-            '--port ' . escapeshellarg($this->options['port'] ?? '2002'),
+            '--interface '.escapeshellarg($this->options['interface'] ?? '127.0.0.1'),
+            '--port '.escapeshellarg($this->options['port'] ?? '2002'),
             '-', // stdin
             '-', // stdout
-            '< ' . escapeshellarg($input),
-            '> ' . escapeshellarg($output),
+            '< '.escapeshellarg($input),
+            '> '.escapeshellarg($output),
         ]));
         $process->setInput($input);
         $process->setTimeout(20);

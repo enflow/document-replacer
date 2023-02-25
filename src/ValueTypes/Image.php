@@ -9,11 +9,14 @@ use JsonSerializable;
 class Image implements JsonSerializable
 {
     private ?string $key = null; // Caching key
+
     private ?bool $ratio = null;
+
     private ?int $width = null;
+
     private ?int $height = null;
 
-    private function __construct(private Closure|string $image)
+    private function __construct(private readonly Closure|string $image)
     {
     }
 
@@ -50,7 +53,7 @@ class Image implements JsonSerializable
     public function path(): string
     {
         if (is_callable($this->image)) {
-            return (($this->image)())->path();
+            return ($this->image)()->path();
         }
 
         return $this->image;
@@ -105,7 +108,7 @@ class Image implements JsonSerializable
         ];
     }
 
-    public function jsonSerialize(): mixed
+    public function jsonSerialize(): array
     {
         if ($this->image instanceof Closure && empty($this->key)) {
             throw ImageSerializationException::noKeyDefined();

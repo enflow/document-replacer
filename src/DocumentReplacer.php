@@ -10,10 +10,12 @@ use PhpOffice\PhpWord\TemplateProcessor;
 class DocumentReplacer
 {
     private TemplateProcessor $templateProcessor;
+
     private ?string $converter = null;
+
     private array $converterOptions = [];
 
-    private function __construct(private Template $template)
+    private function __construct(readonly Template $template)
     {
         $this->templateProcessor = new TemplateProcessor($template->path());
     }

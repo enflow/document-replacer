@@ -1,6 +1,10 @@
 name: run-tests
 
-on: [push, pull_request]
+on:
+    push:
+        branches: [master]
+    pull_request:
+        branches: [master]
 
 jobs:
     test:
@@ -9,31 +13,45 @@ jobs:
             fail-fast: true
             matrix:
                 os: [ubuntu-latest]
-                php: [8.1]
-                dependency-version: [prefer-stable, prefer-lowest]
+                php: [8.2]
+                laravel: [10.*]
+                stability: [prefer-lowest, prefer-stable]
+                include:
+                    - laravel: 10.*
+                      testbench: 8.*
 
-        name: P${{ matrix.php }} - ${{ matrix.dependency-version }} - ${{ matrix.os }}
+        name: P${{ matrix.php }} - L${{ matrix.laravel }} - ${{ matrix.stability }} - ${{ matrix.os }}
 
         steps:
-            -   name: Checkout code
-                uses: actions/checkout@v2
+            - name: Checkout code
+              uses: actions/checkout@v3
 
-            -   name: Setup PHP
-                uses: shivammathur/setup-php@v2
-                with:
-                    php-version: ${{ matrix.php }}
-                    extensions: dom, curl, libxml, mbstring, zip
-                    coverage: none
+            - name: Setup PHP
+              uses: shivammathur/setup-php@v2
+              with:
+                  php-version: ${{ matrix.php }}
+                  extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv, imagick, fileinfo
+                  coverage: none
 
-            -   name: Install dependencies
-                run: composer update ${COMPOSER_FLAGS} --no-interaction --prefer-source
+            - name: Setup problem matchers
+              run: |
+                  echo "::add-matcher::${{ runner.tool_cache }}/php.json"
+                  echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
+
+            - name: Install dependencies
+              run: |
+                  composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" --no-interaction --no-update
+                  composer update --${{ matrix.stability }} --prefer-dist --no-interaction
 
             -   name: Install unoserver and libreoffice
                 run: |
-                     python -m pip install --upgrade pip
-                     sudo apt update
-                     sudo apt-get install -y libreoffice
-                     sudo pip install unoserver
+                    python -m pip install --upgrade pip
+                    sudo apt update
+                    sudo apt-get install -y libreoffice
+                    sudo pip install unoserver
 
-            -   name: Execute tests
-                run: composer test
+            - name: List Installed Dependencies
+              run: composer show -D
+
+            - name: Execute tests
+              run: vendor/bin/phpunit
