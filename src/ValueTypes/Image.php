@@ -13,7 +13,7 @@ class Image implements JsonSerializable
     private ?int $width = null;
     private ?int $height = null;
 
-    private function __construct(private Closure|string $image)
+    private function __construct(private readonly Closure|string $image)
     {
     }
 
@@ -105,7 +105,7 @@ class Image implements JsonSerializable
         ];
     }
 
-    public function jsonSerialize(): mixed
+    public function jsonSerialize(): array
     {
         if ($this->image instanceof Closure && empty($this->key)) {
             throw ImageSerializationException::noKeyDefined();
