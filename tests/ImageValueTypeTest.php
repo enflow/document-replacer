@@ -10,7 +10,7 @@ class ImageValueTypeTest extends TestCase
 {
     public function test_image_create_from_path()
     {
-        $this->assertEquals('4e7e0753fd7068d368bbe516f09e321a', Image::forPath(__DIR__ . '/fixtures/test.png')->signature());
+        $this->assertEquals('4e7e0753fd7068d368bbe516f09e321a', Image::forPath(__DIR__.'/fixtures/test.png')->signature());
     }
 
     public function test_image_create_from_base64_with_prefix()
@@ -69,7 +69,7 @@ class ImageValueTypeTest extends TestCase
 
     public function test_image_replacement_tags()
     {
-        $replacments = Image::forPath(__DIR__ . '/fixtures/test.png')->replacements();
+        $replacments = Image::forPath(__DIR__.'/fixtures/test.png')->replacements();
 
         $this->assertNotEmpty($replacments['path']);
         $this->assertEquals('4e7e0753fd7068d368bbe516f09e321a', $replacments['signature']);
@@ -80,7 +80,7 @@ class ImageValueTypeTest extends TestCase
 
     public function test_image_setters()
     {
-        $replacments = Image::forPath(__DIR__ . '/fixtures/test.png')
+        $replacments = Image::forPath(__DIR__.'/fixtures/test.png')
             ->width(100)
             ->height(200)
             ->ratio(1.2)
