@@ -22,7 +22,7 @@ class LibreOfficeConverter extends AbstractConverter
 
     public function convert(string $input, string $output): void
     {
-        $temporaryOutputDirectory = sys_get_temp_dir() . '/document-replacer-' . uniqid() . '-libreoffice';
+        $temporaryOutputDirectory = sys_get_temp_dir().'/document-replacer-'.uniqid().'-libreoffice';
 
         try {
             $binary = $this->options['binary'] ?? (new ExecutableFinder())->find('libreoffice') ?? static::BINARY;
@@ -31,7 +31,7 @@ class LibreOfficeConverter extends AbstractConverter
                 $binary,
                 '--convert-to pdf:writer_pdf_Export',
                 ...$this->libreOfficeOptions,
-                '--outdir ' . escapeshellarg($temporaryOutputDirectory),
+                '--outdir '.escapeshellarg($temporaryOutputDirectory),
                 escapeshellarg($input),
             ]));
             $process->setTimeout(20);
@@ -42,7 +42,7 @@ class LibreOfficeConverter extends AbstractConverter
             }
 
             // LibreOffice can not write to a file directly, so we need to move the file to the correct location.
-            $files = glob($temporaryOutputDirectory . "/*.pdf");
+            $files = glob($temporaryOutputDirectory.'/*.pdf');
             if (count($files) !== 1) {
                 throw new ConversionFailed('Failed to convert document: more than one file was created');
             }

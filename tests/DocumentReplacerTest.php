@@ -49,7 +49,7 @@ class DocumentReplacerTest extends TestCase
         $output = '/tmp/replaced-document.pdf';
         file_exists($output) && unlink($output);
 
-        DocumentReplacer::template(__DIR__ . '/fixtures/template.docx')
+        DocumentReplacer::template(__DIR__.'/fixtures/template.docx')
             ->converter(LibreOfficeConverter::class)
             ->replace([
                 '${user}' => 'Michel',
