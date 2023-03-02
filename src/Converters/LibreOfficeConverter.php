@@ -34,7 +34,6 @@ class LibreOfficeConverter extends AbstractConverter
                 '--outdir ' . escapeshellarg($temporaryOutputDirectory),
                 escapeshellarg($input),
             ]));
-            $process->setInput($input);
             $process->setTimeout(20);
             $process->mustRun();
 
@@ -42,11 +41,13 @@ class LibreOfficeConverter extends AbstractConverter
                 throw new ConversionFailed('Failed to convert document: no output directory was created');
             }
 
+            // LibreOffice can not write to a file directly, so we need to move the file to the correct location.
             $files = glob($temporaryOutputDirectory . "/*.pdf");
             if (count($files) !== 1) {
                 throw new ConversionFailed('Failed to convert document: more than one file was created');
             }
 
+            // Move the file to the correct location.
             rename($files[0], $output);
         } finally {
             if (file_exists($temporaryOutputDirectory)) {
