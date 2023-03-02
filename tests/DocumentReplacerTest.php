@@ -2,6 +2,7 @@
 
 namespace Enflow\DocumentReplacer\Test;
 
+use Enflow\DocumentReplacer\Converters\LibreOfficeConverter;
 use Enflow\DocumentReplacer\Converters\UnoserverConverter;
 use Enflow\DocumentReplacer\DocumentReplacer;
 use Enflow\DocumentReplacer\Exceptions\InvalidReplacement;
@@ -43,7 +44,25 @@ class DocumentReplacerTest extends TestCase
         $this->assertFileExists($output);
     }
 
-    public function test_unoconv_without_extension()
+    public function test_pdf_saver_via_libreoffice_converter()
+    {
+        $output = '/tmp/replaced-document.pdf';
+        file_exists($output) && unlink($output);
+
+        DocumentReplacer::template(__DIR__ . '/fixtures/template.docx')
+            ->converter(LibreOfficeConverter::class)
+            ->replace([
+                '${user}' => 'Michel',
+                '${address.city}' => 'Alphen aan den Rijn',
+                '${company}' => 'Enflow',
+            ])
+            ->save($output);
+
+        $this->assertTrue(is_file($output));
+        $this->assertFileExists($output);
+    }
+
+    public function test_unoserver_without_extension()
     {
         $output = '/tmp/replaced-document-without-extension';
         file_exists($output) && unlink($output);
