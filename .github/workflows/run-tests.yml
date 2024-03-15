@@ -51,4 +51,4 @@ jobs:
           sudo pip install unoserver
 
       - name: Execute tests
-        run: vendor/bin/phpunit
+        run: composer test
