@@ -36,5 +36,7 @@
     "scripts": {
         "format": "vendor/bin/pint",
         "test": "bash tests.sh"
-    }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }
