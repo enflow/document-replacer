@@ -4,6 +4,4 @@ namespace Enflow\DocumentReplacer\Exceptions;
 
 use Exception;
 
-class ConversionFailed extends Exception implements DocumentReplacerException
-{
-}
+class ConversionFailed extends Exception implements DocumentReplacerException {}

@@ -11,7 +11,7 @@ class UnoserverConverter extends AbstractConverter
 
     public function convert(string $input, string $output): void
     {
-        $binary = $this->options['binary'] ?? (new ExecutableFinder())->find('unoconvert') ?? static::BINARY;
+        $binary = $this->options['binary'] ?? (new ExecutableFinder)->find('unoconvert') ?? static::BINARY;
 
         // We're using pipes directly to stdin/stdout, as the file reading in unoconvert has issue with Ceph based filesystems.
         // Error on file input: "type detection failed"

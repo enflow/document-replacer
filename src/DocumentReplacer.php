@@ -15,7 +15,7 @@ class DocumentReplacer
 
     private array $converterOptions = [];
 
-    private function __construct(readonly Template $template)
+    private function __construct(public readonly Template $template)
     {
         $this->templateProcessor = new TemplateProcessor($template->path());
     }

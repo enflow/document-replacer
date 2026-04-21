@@ -25,7 +25,7 @@ class LibreOfficeConverter extends AbstractConverter
         $temporaryOutputDirectory = sys_get_temp_dir().'/document-replacer-'.uniqid().'-libreoffice';
 
         try {
-            $binary = $this->options['binary'] ?? (new ExecutableFinder())->find('libreoffice') ?? static::BINARY;
+            $binary = $this->options['binary'] ?? (new ExecutableFinder)->find('libreoffice') ?? static::BINARY;
 
             $process = Process::fromShellCommandline(implode(' ', [
                 $binary,

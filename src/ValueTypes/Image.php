@@ -16,9 +16,7 @@ class Image implements JsonSerializable
 
     private ?int $height = null;
 
-    private function __construct(private readonly Closure|string $image)
-    {
-    }
+    private function __construct(private readonly Closure|string $image) {}
 
     public static function forPath(string $path): self
     {

@@ -2,6 +2,4 @@
 
 namespace Enflow\DocumentReplacer\Exceptions;
 
-interface DocumentReplacerException
-{
-}
+interface DocumentReplacerException {}
